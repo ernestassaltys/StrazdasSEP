@@ -1,0 +1,119 @@
+body{
+    background-color: #bdb7b7;
+    font-family: 'Roboto', sans-serif;
+    margin: 0px;
+}
+.logo{
+    padding-left: 20px;
+    float:left;
+    display: table-cell;
+    font-size: 30px;
+    line-height: 60px;
+}
+.login{
+    padding-right: 20px;
+    float:right;
+    display: table-cell;
+    vertical-align: middle;
+    line-height: 60px;
+}
+.topBanner
+{
+    display: table;
+    height:60px;
+    width: 100%;
+    background-color: #c7afaf;
+}
+.infoHeader{
+    height: 300px;
+    background-image: url("https://i.ibb.co/kyZCF8s/info-Header.jpg");
+    background-color: #cccccc;
+    background-repeat: no-repeat;
+    background-position-y: center;
+    background-size: cover;
+    filter: grayscale(70%);
+    width: 100%;
+    text-align: center;
+    margin: auto;
+    color: white;
+}
+.infoTxt{
+    margin:auto;
+    background-color: rgba(0,0,0,0.4);
+    color:white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 80%;
+    padding: 20px; 
+
+}
+.infoTxt h2{
+    font-size: 50px;;
+}
+.buttons
+{
+    height: 700px;
+    width: 92%;
+    clear: both;  
+    position: relative;
+    margin: 0 auto;
+    text-align: center;
+}
+.btntxt{
+    color: white;  
+}
+.txtContainer
+{
+    display: table-cell;
+    vertical-align: middle;
+    padding: 20px;
+}
+.button1
+{
+    width: 30%;
+    height: 100%;
+    float: left;
+    overflow: hidden;
+    display: table;
+    position: relative;
+    margin: 10px;
+}
+.button2
+{
+    width: 30%;
+    height: 100%;
+    float: left;
+    overflow: hidden;
+    display: table;
+    position: relative;
+    margin: 10px;
+}
+.button3
+{
+    width: 30%;
+    height: 100%;
+    float: left;
+    overflow: hidden;
+    display: table;
+    position: relative; 
+    margin: 10px;
+}
+.buttons img{
+    position: absolute;
+    right: -50%;
+    left: -50%;
+    bottom: -50%;
+    top: -50%;
+    margin: auto auto;
+    z-index: -1;
+    filter: grayscale(70%) blur(4px) brightness(60%);
+}
+img
+{
+    max-height: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
