@@ -110,6 +110,13 @@ body{
     margin: auto auto;
     z-index: -1;
     filter: grayscale(70%) blur(4px) brightness(60%);
+    -moz-transition: filter .2s ease-in;
+    -o-transition: filter .2s ease-in;
+    -webkit-transition: filter .2s ease-in;
+    transition: filter .2s ease-in;
+}
+#category-buttons:hover img{
+    filter:brightness(50%);
 }
 img
 {
