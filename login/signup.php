@@ -9,11 +9,12 @@ session_start();
         $password = $_POST['password'];
         $email = $_POST['email'];
         $phone = $_POST['phone'];
+        $display_name = $_POST['display_name'];
 
         $query = "SELECT * FROM `naudotojas` WHERE `prisijungimo_vardas` = '$user_name' OR `epastas` = '$email'";
         $result = mysqli_query($con, $query);
 
-        if(!empty($user_name) && !empty($password) && !empty($email) && !empty($phone) && !is_numeric($user_name))
+        if(!empty($user_name) && !empty($password) && !empty($email) && !empty($phone) && !is_numeric($user_name ) && !empty($display_name))
         {
             if($result && mysqli_num_rows($result) > 0)
             {
@@ -22,7 +23,8 @@ session_start();
             else
             {
                 $user_id = generateRandomString(8);
-                $query = "insert into naudotojas (id, prisijungimo_vardas, slaptazodis, epastas, telefonas) values ('$user_id', '$user_name', '$password', '$email', '$phone')";
+                $query = "insert into naudotojas (id, prisijungimo_vardas, display_name, slaptazodis, epastas, telefonas) 
+                values ('$user_id', '$user_name', '$display_name', '$password', '$email', '$phone')";
                 mysqli_query($con, $query);
                 header("Location: login.php");
                 die; 
@@ -54,6 +56,8 @@ session_start();
             ?>
             <p> Prisijungimo Vardas </p>
             <input type="text" name="user_name" placeholder="Iveskite norimą prisijungimo vardą">
+            <p> Vardas sistemoje </p>
+            <input type="text" name="display_name" placeholder="Iveskite norimą vardą sistemoje">
             <p> El. paštas </p>
             <input type="email" name="email" placeholder="Iveskite el. pašto adresą">
             <p> Tel. nr.</p>

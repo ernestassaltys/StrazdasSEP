@@ -43,9 +43,13 @@ session_start();
             <input class = "search-field" type="search" placeholder="Paieška">
             <button class ="search-button" type="submit"><i class="search-button-text">Ieškoti</i></button>
         </div>
-        <div class = "userData">
-                <label for="username">Sveiki, <?php echo $user_data['prisijungimo_vardas']?></label>
-                <a href="../login/logout.php"> Atsijungti </a>
+        <div class = "dropdown">
+                <button class = "dropbtn">Sveiki, <?php echo $user_data['display_name']?></button>
+                <div class = "dropdown-content">
+                    <a href="account/general.php">Nustatymai</a>
+                    <a href="login/logout.php">Atsijungti</a>
+                </div>
+                
             </div>
         </div>
     <div class="menuSidebar">
