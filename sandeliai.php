@@ -13,7 +13,7 @@ session_start();
   <meta name="autoriai" content="Domantas Orvidas;Ernestas Šaltys;Lukas Marcinkevičius">
   <meta name="apibūdinimas" content="Logistikos pagalbininkas">
   <meta name="keywords" content="logistika">
-  <title>LogBuddy - Klientai</title>
+  <title>LogBuddy - Sandeliai</title>
 </head>
 <body>
     <div class="menuHeader">
@@ -35,45 +35,48 @@ session_start();
     <ul>
             <li><a href="Klientai.php">Klientai</a></li>
             <li><a href="uzsakymai.php">Užsakymai</a></li>
-            <li class="CurrentPage"><a href="../prekes.php">Prekės</a></li>
+            <li><a href="prekes.php">Prekės</a></li>
             <li><a href="darbuotojai.php">Darbuotojai</a></li>
             <li><a href="pelnas.php">Pelnas</a></li>
+            <li class="CurrentPage"><a href="sandeliai.php">Sandeliai</a></li>
+            <li><a href="kontaktai.php">Kontaktai</a></li>
         </ul>
 
     </div>
     <div class="pagrindinis">
-    <h2>Prekės</h2>
+    <h2>Sandeliai</h2>
     <div class="tableTop">
-        <a class="addButton" href="prekes/add.php">Pridėti prekę</a>
+        <a class="addButton" href="sandeliai/add.php">Pridėti sandelį</a>
         <?php
             if (isset($_GET["msg"]) && $_GET["msg"] == 'fkfail') {
-                echo "<p class=wrong>Ši prekė yra priskirta kitoms lentelėms<p>";
+                echo "<p class=wrong>Sandelyje yra prekių<p>";
+            }
+            if (isset($_GET["msg"]) && $_GET["msg"] == 'fkfaildarb') {
+                echo "<p class=wrong>Sandelyje yra darbuotojų<p>";
             }
         ?>
     </div>
     <table>
                     <tr>
                         <th>Pavadinimas</th>
-                        <th>Kiekis</th>
-                        <th>Kaina</th>
-                        <th>Sandelys</th>
+                        <th>Adresas</th>
+                        <th>Būsena</th>
                         <th>Funkcijos</th>
                     </tr>
                     <?php
-                        $querry = "SELECT p.id, p.pavadinimas, p.kaina, p.kiekis, s.pavadinimas as pav FROM preke as p JOIN sandelys as s ON s.id=p.fk_Sandelysid;";
+                        $querry = "SELECT s.id, s.pavadinimas, s.adresas, b.name as san_busena FROM sandelys as s JOIN busena_sandelys as b ON b.id_Busena_sandelys=s.busena;";
                         $result = $con-> query($querry);
 
                         if($result-> num_rows > 0){
                             while($row = $result -> fetch_assoc())
                             {
-                                echo "<tr><td>".$row["pavadinimas"]."</td><td>".$row["kiekis"]."</td><td>".$row["kaina"]."</td><td>".
-                                $row["pav"]."</td><td>";
-                                echo "<a class='actionbutton button-edit' href = 'prekes/edit.php?rn=$row[id]'>Redaguoti</a> <a class='actionbutton button-remove' href = 'prekes/delete.php?rn=$row[id]' onclick='return confirm(`Are you sure?`);'>Pašalinti</a> </td> </tr>";
+                                echo "<tr><td>".$row["pavadinimas"]."</td><td>".$row["adresas"]."</td><td>".$row["san_busena"]."</td><td>";
+                                echo "<a class='actionbutton button-edit' href = 'sandeliai/edit.php?rn=$row[id]'>Redaguoti</a> <a class='actionbutton button-remove' href = 'sandeliai/delete.php?rn=$row[id]' onclick='return confirm(`Are you sure?`);'>Pašalinti</a> </td> </tr>";
                             }
                             echo "</table>";
                         }
                         else{
-                            echo "Prekių nėra";
+                            echo "Sandelių nėra";
                         }
                     
                     ?>

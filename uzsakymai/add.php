@@ -62,6 +62,8 @@ session_start();
             <li><a href="../prekes.php">Prekės</a></li>
             <li><a href="../darbuotojai.php">Darbuotojai</a></li>
             <li><a href="../pelnas.php">Pelnas</a></li>
+            <li><a href="../sandeliai.php">Sandeliai</a></li>
+            <li><a href="../kontaktai.php">Kontaktai</a></li>
         </ul>
 
     </div>

@@ -4,7 +4,7 @@
         if(isset($_SESSION['user_id']))
         {
             $id = $_SESSION['user_id'];
-            $query = "select * from naudotojas where id = '$id' limit 1";
+            $query = "select * from naudotojas where id = $id limit 1";
             $result = mysqli_query($con, $query);
             if($result && mysqli_num_rows($result) > 0)
             {

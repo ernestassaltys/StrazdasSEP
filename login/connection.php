@@ -1,8 +1,8 @@
 <?php
     $dbhost = "localhost";
-    $dbuser = "id16710061_localhost";
-    $dbpassword = "sdtav>kb!)xQ*U&8";
-    $dbname = "id16710061_strazdasip";
+    $dbuser = "ernsal";
+    $dbpassword = "HeeDee5EeCatain2";
+    $dbname = "ernsal";
 
 
     if(!$con = mysqli_connect($dbhost, $dbuser, $dbpassword, $dbname))

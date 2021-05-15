@@ -18,10 +18,12 @@ session_start();
                 if($result && mysqli_num_rows($result) > 0)
                 {
                     $user_data = mysqli_fetch_assoc($result);
+                    $pw = $user_data['slaptazodis'];
+
                     if($user_data['slaptazodis'] === $password)
                     {
                         $_SESSION['user_id'] = $user_data['id'];
-                        header("Location: ../index.php");
+                        header("Location: ../index.php?msg=success");
                         die;
                     }
                 }

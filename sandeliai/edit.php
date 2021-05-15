@@ -9,15 +9,14 @@ session_start();
     if($_SERVER['REQUEST_METHOD'] == "POST")
     {
         $pavadinimas = $_POST['pavadinimas'];
-        $kaina = $_POST['kaina'];
-        $kiekis = $_POST['kiekis'];
-        $sandelys = $_POST['sandeliai'];
+        $adresas = $_POST['adresas'];
+        $sandelys_busena = $_POST['sandelys_busena'];
 
-        if(!empty($pavadinimas) && !empty($kaina) && !empty($kiekis) && !empty($sandelys))
+        if(!empty($pavadinimas) && !empty($adresas) && !empty($sandelys_busena))
         {
-            $query = "UPDATE preke SET pavadinimas ='$pavadinimas', kaina= '$kaina', kiekis='$kiekis', fk_Sandelysid='$sandelys' WHERE id='$id'";
+            $query = "UPDATE sandelys SET pavadinimas ='$pavadinimas', adresas= '$adresas', busena='$sandelys_busena' WHERE id='$id'";
             mysqli_query($con, $query);
-            header("Location:../prekes.php");
+            header("Location:../sandeliai.php");
             die;
         }
         else
@@ -34,7 +33,7 @@ session_start();
   <meta name="autoriai" content="Domantas Orvidas;Ernestas Šaltys;Lukas Marcinkevičius">
   <meta name="apibūdinimas" content="Logistikos pagalbininkas">
   <meta name="keywords" content="logistika">
-  <title>LogBuddy - Klientai</title>
+  <title>LogBuddy - Redaguoti sandelį</title>
 </head>
 <body>
     <div class="menuHeader">
@@ -56,16 +55,16 @@ session_start();
         <ul>
             <li><a href="../Klientai.php">Klientai</a></li>
             <li><a href="../uzsakymai.php">Užsakymai</a></li>
-            <li class="CurrentPage"><a href="../prekes.php">Prekės</a></li>
+            <li><a href="../prekes.php">Prekės</a></li>
             <li><a href="../darbuotojai.php">Darbuotojai</a></li>
             <li><a href="../pelnas.php">Pelnas</a></li>
-            <li><a href="../sandeliai.php">Sandeliai</a></li>
+            <li class="CurrentPage"><a href="../sandeliai.php">Sandeliai</a></li>
             <li><a href="../kontaktai.php">Kontaktai</a></li>
         </ul>
 
     </div>
     <div class="pagrindinis">
-    <h2>Pridėti klientą</h2>
+    <h2>Redaguoti sandelį</h2>
     <?php
         if (isset($_GET["msg"]) && $_GET["msg"] == 'invalidData') {
             echo "<p class=wrong>Įvesti ne visi duomenys!<p>";
@@ -73,38 +72,35 @@ session_start();
     ?>
     <form method = "post">
         <?php
-            $querry = "SELECT p.id, p.pavadinimas, p.kaina, p.kiekis, s.pavadinimas as pav, s.id as sid 
-            FROM preke as p JOIN sandelys as s ON s.id=p.fk_Sandelysid WHERE p.id = $id  LIMIT 1;";
+            $querry = "SELECT s.id, s.pavadinimas, s.adresas, b.id_Busena_sandelys as bid, b.name as san_busena 
+            FROM sandelys as s JOIN busena_sandelys as b ON b.id_Busena_sandelys=s.busena
+            WHERE s.id = $id LIMIT 1";
             $result = $con-> query($querry);
 
-            $preke_data = mysqli_fetch_assoc($result);
+            $sandelys_data = mysqli_fetch_assoc($result);
         ?>
         <div class = "inputContainer">
             <p class = "inputHeadline">Pavadinimas</p> 
-            <input class = 'formInput' type = 'text' name='pavadinimas' value="<?php echo $preke_data['pavadinimas'] ?>">
+            <input class = 'formInput' type = 'text' name='pavadinimas' value="<?php echo $sandelys_data['pavadinimas'] ?>">
         </div>
         <div class = "inputContainer">
-            <p class = "inputHeadline">Kiekis</p> 
-            <input class = 'formInput' type = 'number' name='kiekis' value="<?php echo $preke_data['kiekis'] ?>">
+            <p class = "inputHeadline">Adresas</p> 
+            <input class = 'formInput' type = 'text' name='adresas' value="<?php echo $sandelys_data['adresas'] ?>">
         </div>
         <div class = "inputContainer">
-            <p class = "inputHeadline">Kaina</p> 
-            <input class = 'formInput' type = 'number' name='kaina' value="<?php echo $preke_data['kaina'] ?>">
-        </div>
-        <div class = "inputContainer">
-            <p class = "inputHeadline">Sandelys</p> 
+            <p class = "inputHeadline">Būsena</p> 
             <?php
-                        $sandeliai = "SELECT * FROM sandelys";
+                        $sandeliai = "SELECT * FROM busena_sandelys";
                         $result = $con-> query($sandeliai);
-                        echo "<select name='sandeliai' id='sandeliai'>";
+                        echo "<select name='sandelys_busena' id='sandelys_busena'>";
                         if($result-> num_rows > 0){
                             while($row = $result -> fetch_assoc())
                             {
-                                echo "<option value='".$row["id"]."'";
-                                if($row["id"] === $preke_data["sid"]){
+                                echo "<option value='".$row["id_Busena_sandelys"]."'";
+                                if($row["id_Busena_sandelys"] === $sandelys_data["bid"]){
                                     echo "selected='selected'";
                                 }
-                                echo ">".$row["pavadinimas"]."</option>";
+                                echo ">".$row["name"]."</option>";
                             }
                         }
                         else{
@@ -113,7 +109,35 @@ session_start();
                         ?>
             </select>
         </div>
-            <a class = "buttonReturn" href="../prekes.php">Grįžti į sąrašą</a>   
+
+        <div>
+            <h2> Sandelyje esančios prekės </h2>
+            <table>
+            <tr>
+                <th>Pavadinimas</th>
+                <th>Kiekis</th>
+                <th>Kaina</th>
+            </tr>
+            <?php
+                $querry = "SELECT p.id, p.pavadinimas, p.kaina, p.kiekis FROM preke as p WHERE p.fk_Sandelysid = $id";
+                $result = $con-> query($querry);
+
+                if($result-> num_rows > 0){
+                    while($row = $result -> fetch_assoc())
+                    {
+                        echo "<tr><td>".$row["pavadinimas"]."</td><td>".$row["kiekis"]."</td><td>".$row["kaina"]."</td><td>";
+                        /*echo "<a class='actionbutton button-edit' href = 'prekes/edit.php?rn=$row[id]'>Redaguoti</a> <a class='actionbutton button-remove' href = 'prekes/delete.php?rn=$row[id]' onclick='return confirm(`Are you sure?`);'>Pašalinti</a> </td> </tr>";*/
+                    }
+                    echo "</table>";
+                }
+                else{
+                    echo "Prekių nėra";
+                }
+            
+            ?>
+            </table>
+        </div>
+            <a class = "buttonReturn" href="../sandeliai.php">Grįžti į sąrašą</a>   
             <input class ='buttonSuccess' type="submit" name="submit" value="Išsaugoti">                              
         </form>
     </div>

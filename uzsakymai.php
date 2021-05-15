@@ -34,11 +34,13 @@ session_start();
         </div>
     <div class="menuSidebar">
         <ul>
-            <li><a href="Klientai.php">Klientai</a></li>
+        <li><a href="Klientai.php">Klientai</a></li>
             <li class="CurrentPage"><a href="uzsakymai.php">Užsakymai</a></li>
-            <li><a href="../prekes.php">Prekės</a></li>
-            <li><a href="../darbuotojai.php">Darbuotojai</a></li>
-            <li><a href="../pelnas.php">Pelnas</a></li>
+            <li><a href="prekes.php">Prekės</a></li>
+            <li><a href="darbuotojai.php">Darbuotojai</a></li>
+            <li><a href="pelnas.php">Pelnas</a></li>
+            <li><a href="sandeliai.php">Sandeliai</a></li>
+            <li><a href="kontaktai.php">Kontaktai</a></li>
         </ul>
 
     </div>

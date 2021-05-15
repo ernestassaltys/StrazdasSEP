@@ -8,20 +8,18 @@ session_start();
     $id = generateRandomString(8);
     if($_SERVER['REQUEST_METHOD'] == "POST")
     {
-        $vardas = $_POST['vardas'];
-        $pavarde = $_POST['pavarde'];
-        $telefonas = $_POST['telefonas'];
-        $epastas = $_POST['epastas'];
+        $pavadinimas = $_POST['pavadinimas'];
+        $adresas = $_POST['adresas'];
+        $sandelys_busena = $_POST['sandelys_busena'];
 
-        if(!empty($vardas) && !empty($pavarde) && !empty($telefonas) && !empty($epastas))
+        if(!empty($pavadinimas) && !empty($adresas) && !empty($sandelys_busena))
         {
-            $query = "INSERT INTO uzsakovas (id,vardas,pavarde,telefonas,epastas) VALUES($id,'$vardas','$pavarde', '$telefonas', '$epastas')";
+            $query = "INSERT INTO sandelys (id,pavadinimas,kiekis,adresas,busena) VALUES($id,'$pavadinimas',0, '$adresas', '$sandelys_busena')";
             mysqli_query($con, $query);
-            header("Location:../Klientai.php");
+            header("Location:../sandeliai.php");
             die;
         }
-        else
-        {
+        else{
             header("Location:add.php?msg=invalidData");
         }
     }
@@ -34,7 +32,7 @@ session_start();
   <meta name="autoriai" content="Domantas Orvidas;Ernestas Šaltys;Lukas Marcinkevičius">
   <meta name="apibūdinimas" content="Logistikos pagalbininkas">
   <meta name="keywords" content="logistika">
-  <title>LogBuddy - Klientai</title>
+  <title>LogBuddy - Prekės</title>
 </head>
 <body>
     <div class="menuHeader">
@@ -54,18 +52,18 @@ session_start();
         </div>
     <div class="menuSidebar">
     <ul>
-            <li class="CurrentPage"><a href="../Klientai.php">Klientai</a></li>
+            <li><a href="../Klientai.php">Klientai</a></li>
             <li><a href="../uzsakymai.php">Užsakymai</a></li>
             <li><a href="../prekes.php">Prekės</a></li>
             <li><a href="../darbuotojai.php">Darbuotojai</a></li>
             <li><a href="../pelnas.php">Pelnas</a></li>
-            <li><a href="../sandeliai.php">Sandeliai</a></li>
+            <li class="CurrentPage"><a href="../sandeliai.php">Sandeliai</a></li>
             <li><a href="../kontaktai.php">Kontaktai</a></li>
         </ul>
 
     </div>
     <div class="pagrindinis">
-    <h2>Pridėti klientą</h2>
+    <h2>Pridėti sandelį</h2>
     <?php
         if (isset($_GET["msg"]) && $_GET["msg"] == 'invalidData') {
             echo "<p class=wrong>Įvesti ne visi duomenys!<p>";
@@ -73,22 +71,37 @@ session_start();
     ?>
     <form method = "post">
         <div class = "inputContainer">
-            <p class = "inputHeadline">Vardas</p> 
-            <input class = 'formInput' type = 'text' name='vardas' placeholder="Vardas">
+            <p class = "inputHeadline">Pavadinimas</p> 
+            <input class = 'formInput' type = 'text' name='pavadinimas' placeholder="Pavadinimas">
         </div>
         <div class = "inputContainer">
-            <p class = "inputHeadline">Pavardė</p> 
-            <input class = 'formInput' type = 'text' name='pavarde' placeholder="Pavardė">
+            <p class = "inputHeadline">Adresas</p> 
+            <input class = 'formInput' type = 'text' name='adresas' placeholder="Adresas">
         </div>
         <div class = "inputContainer">
-            <p class = "inputHeadline">Tel. nr.</p> 
-            <input class = 'formInput' type = 'tel' name='telefonas' placeholder="Telefonas">
+            <p class = "inputHeadline">Būsena</p> 
+            <?php
+                        $sandeliai = "SELECT * FROM busena_sandelys";
+                        $result = $con-> query($sandeliai);
+                        echo "<select name='sandelys_busena' id='sandelys_busena'>";
+                        if($result-> num_rows > 0){
+                            while($row = $result -> fetch_assoc())
+                            {
+                                echo "<option value='".$row["id_Busena_sandelys"]."'";
+                                if($row["id_Busena_sandelys"] === $sandelys_data["bid"]){
+                                    echo "selected='selected'";
+                                }
+                                echo ">".$row["name"]."</option>";
+                            }
+                        }
+                        else{
+                            echo "Sandelių nėra";
+                        }
+                        ?>
+            </select>
         </div>
-        <div class = "inputContainer">
-            <p class = "inputHeadline">El. paštas</p> 
-            <input class = 'formInput' type = 'email' name='epastas' placeholder="El. paštas">
-        </div>  
-            <a class = "buttonReturn" href="../Klientai.php">Grįžti į sąrašą</a>  
+        <br>  
+            <a class = "buttonReturn" href="../sandeliai.php">Grįžti į sąrašą</a>  
             <input class ='buttonSuccess' type="submit" name="submit" value="Išsaugoti">                       
         </form>
     </div>
